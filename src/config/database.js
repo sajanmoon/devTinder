@@ -1,15 +1,9 @@
 const mongoose = require("mongoose");
 
 const connectDB = async () => {
-  await mongoose.connect(
-    "mongodb+srv://sajanmoon5:dyDxjk03h200lHVF@devtinderapp.qqjcu.mongodb.net/?retryWrites=true&w=majority&appName=DevTinderApp"
-  );
+  await mongoose.connect("mongodb://localhost:27017/devtinder");
 };
 
-connectDB()
-  .then(() => {
-    console.log("Database connect succcesfully");
-  })
-  .catch((error) => {
-    console.error("not connected", error.message);
-  });
+module.exports = connectDB;
+
+// mongodb+srv://sajanmoon5:<db_password>@devtinderapp.qqjcu.mongodb.net/?retryWrites=true&w=majority&appName=DevTinderApp
