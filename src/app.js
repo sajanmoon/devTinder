@@ -27,6 +27,38 @@ app.get("/feed", async (req, res) => {
   }
 });
 
+app.delete("/user", async (req, res) => {
+  const userId = req.body.userId;
+  try {
+    const user = await User.findByIdAndDelete(userId);
+    res.send("user data deleted succesfully");
+  } catch (error) {
+    res.status(400).send("Error", error.message);
+  }
+});
+
+// TO UPDATE THE USER
+app.patch("/user/:userId", async (req, res) => {
+  const userId = req.params.userId;
+  const data = req.body;
+  try {
+    const ALLOWED_UPDATE = ["firstName", "lastName", "skills"];
+    const isUpdateAllowed = Object.keys(data).every((k) => {
+      return ALLOWED_UPDATE.includes(k);
+    });
+    if (!isUpdateAllowed) {
+      throw new Error("update not allowed");
+    }
+    if (data.skills.length > 10) {
+      throw new Error("cannot add more than 10");
+    }
+    const user = await User.findByIdAndUpdate({ _id: userId }, data);
+    res.send("updated successfully");
+  } catch (error) {
+    res.status(400).send({ message: "Error", error: error.message });
+  }
+});
+
 // app.get("/user", async (req, res) => {
 //   const userEmail = req.body.emailId;
 //   try {
@@ -47,7 +79,7 @@ app.post("/signup", async (req, res) => {
     await user.save();
     res.send("saved succesfully");
   } catch (error) {
-    res.status(400).send("Error", error.message);
+    res.status(400).send({ message: "Error", error: error.message });
   }
 });
 
