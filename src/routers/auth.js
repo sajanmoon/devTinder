@@ -67,4 +67,20 @@ authRouter.post("/login", async (req, res) => {
   }
 });
 
+authRouter.get("/feed", async (req, res) => {
+  try {
+    const users = await User.find({});
+    res.send(users);
+  } catch (error) {
+    res.status(400).send("Something went wrong");
+  }
+});
+
+authRouter.post("/logout", async (req, res) => {
+  res.cookie("token", null, {
+    expires: new Date(Date.now()),
+  });
+  res.send("LOGOUT SUCCESSFULL");
+});
+
 module.exports = authRouter;
