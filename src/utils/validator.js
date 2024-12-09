@@ -1,7 +1,7 @@
 const validator = require("validator");
 
 const validateFormData = (req) => {
-  const { firstName, lastName, emailId, password } = req.body;
+  const { firstName, lastName, emailId, password, photoUrl } = req.body;
 
   if (!firstName || !lastName) {
     throw new Error("name not valid");
@@ -13,7 +13,14 @@ const validateFormData = (req) => {
 };
 
 const validateEditProfileData = (req) => {
-  const allowedEditFields = ["firstName", "lastName", "age", "about", "gender"];
+  const allowedEditFields = [
+    "firstName",
+    "lastName",
+    "age",
+    "about",
+    "gender",
+    "photoUrl",
+  ];
 
   const isEditAllowed = Object.keys(req.body).every((field) =>
     allowedEditFields.includes(field)
